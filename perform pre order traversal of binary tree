@@ -1,0 +1,60 @@
+#include <stdio.h>
+#include <stdlib.h>
+typedef struct Node {
+    int data;              
+    struct Node* left;     
+    struct Node* right;    
+} Node;
+Node* createNode(int data) {
+    Node* newNode = (Node*)malloc(sizeof(Node));
+    if (newNode == NULL) {
+        printf("Memory allocation failed\n");
+        exit(1);
+    }
+    newNode->data = data;
+    newNode->left = NULL;
+    newNode->right = NULL;
+    return newNode;
+}
+void insertNode(Node** root, int data) {
+    Node* newNode = createNode(data);
+ if (*root == NULL) {
+        *root = newNode;
+        return;}
+    Node* queue[100]; // Simple array-based queue for demonstration
+    int front = 0, rear = 0;
+    queue[rear++] = *root;
+    while (front < rear) {
+        Node* current = queue[front++];
+        if (current->left == NULL) {
+            current->left = newNode;
+            return;
+        } else {
+            queue[rear++] = current->left;
+        }
+        if (current->right == NULL) {
+            current->right = newNode;
+            return;
+        } else {
+            queue[rear++] = current->right;
+        } }}
+void preOrderTraversal(Node* root) {
+    if (root != NULL) {
+        printf("%d ", root->data);      // Visit root node
+        preOrderTraversal(root->left);  // Traverse left subtree
+        preOrderTraversal(root->right); // Traverse right subtree
+    }
+}
+int main() {
+    Node* root = NULL; // Start with an empty tree
+    insertNode(&root, 10);
+    insertNode(&root, 5);
+    insertNode(&root, 15);
+    insertNode(&root, 3);
+    insertNode(&root, 7);
+    printf("Pre-order traversal of the tree:\n");
+    preOrderTraversal(root);
+    printf("\n");
+    return 0;
+}
+
